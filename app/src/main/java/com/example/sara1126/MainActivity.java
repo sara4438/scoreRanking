@@ -2,13 +2,16 @@ package com.example.sara1126;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,11 +32,16 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add(new Member("test6", "test3", "0912345678", "1990/07/28"));
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(this);  //決定布局方向
+//        RecyclerView.LayoutManager layoutManager =
+//                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        RecyclerView.LayoutManager layoutManager =  //一行兩個
+//                new GridLayoutManager(this, 2);
 
         RecyclerView recyclerView = findViewById(R.id.rv_test);
         recyclerView.setLayoutManager(layoutManager);
         CustomAdpapter adapter = new CustomAdpapter(arrayList);
         recyclerView.setAdapter(adapter);
+
 
     }
 
@@ -70,32 +78,60 @@ public class MainActivity extends AppCompatActivity {
 //                });
             }
         }
+        private class AddItemViewHolder extends RecyclerView.ViewHolder{
+            Button btnAdd;
+            public AddItemViewHolder(View itemView){
+                super(itemView);
+                btnAdd = itemView.findViewById(R.id.user_info_btn_add);
+            }
+        }
+
 
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if(viewType ==1) {
+                View view = LayoutInflater.from(parent.getContext()) //用元件找context (activity)
+                        .inflate(R.layout.user_info_item_add, parent, false);//一定要是false
+                return new ItemViewHolder(view); //將view包裝成view holder
+            }
             View view = LayoutInflater.from(parent.getContext()) //用元件找context (activity)
-                    .inflate(R.layout.user_infi_item_member, parent, false);//一定要是false
-            return new ItemViewHolder(view); //將view包裝成view holder
+                    .inflate(R.layout.user_info_item_member, parent, false);
+            return new ItemViewHolder(view);
         }
 
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {  //position:當前綁定的原件在整個列表(顯示的)是第幾個
-            ItemViewHolder ivh = (ItemViewHolder)holder; //降轉
-//            ivh.tvTest.setText(data.get(position));
-            Member member = data.get(position);
-            ivh.tvAccount.setText(member.getAccount());
-            ivh.tvName.setText(member.getName());
-            ivh.tvBirth.setText(member.getBirth());
-            ivh.tvPhoneNum.setText(member.getPhoneNum());
-            //可能需要把adapter改成全域變數
+//            if(holder instanceof ItemViewHolder){ //較不推薦方法
+            int viewType= getItemViewType(position);
+            if(viewType==0 ){
+                ItemViewHolder ivh = (ItemViewHolder)holder; //降轉
+//                ivh.tvTest.setText(data.get(position));
+                Member member = data.get(position);
+                ivh.tvAccount.setText(member.getAccount());
+                ivh.tvName.setText(member.getName());
+                ivh.tvBirth.setText(member.getBirth());
+                ivh.tvPhoneNum.setText(member.getPhoneNum());
+                //可能需要把adapter改成全域變數
+            }else if (viewType ==1){
+
+            }
+//
+        }
+
+        public int getItemViewType(int position){ //依照position決定item樣式
+            //找到最後一個把它變add
+            if(position == data.size()){
+                return 1;
+            }
+            return 0;
         }
 
         @Override
         public int getItemCount() {
-            return data.size();
+            return data.size() +1; //為了多顯示一個新增按鈕
         }
     }
 
