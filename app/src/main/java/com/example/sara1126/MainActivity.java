@@ -27,9 +27,13 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add(new Member("test1", "test1", "0912345678", "1990/07/28"));
         arrayList.add(new Member("test2", "test2", "0912345678", "1990/07/28"));
         arrayList.add(new Member("test3", "test3", "0912345678", "1990/07/28"));
+
         arrayList.add(new Member("test4", "test1", "0912345678", "1990/07/28"));
         arrayList.add(new Member("test5", "test2", "0912345678", "1990/07/28"));
         arrayList.add(new Member("test6", "test3", "0912345678", "1990/07/28"));
+        arrayList.add(new Member("test7", "test1", "0912345678", "1990/07/28"));
+        arrayList.add(new Member("test8", "test2", "0912345678", "1990/07/28"));
+        arrayList.add(new Member("test9", "test3", "0912345678", "1990/07/28"));
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(this);  //決定布局方向
 //        RecyclerView.LayoutManager layoutManager =
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             if(viewType ==1) {
                 View view = LayoutInflater.from(parent.getContext()) //用元件找context (activity)
                         .inflate(R.layout.user_info_item_add, parent, false);//一定要是false
-                return new ItemViewHolder(view); //將view包裝成view holder
+                return new AddItemViewHolder(view); //將view包裝成view holder
             }
             View view = LayoutInflater.from(parent.getContext()) //用元件找context (activity)
                     .inflate(R.layout.user_info_item_member, parent, false);
