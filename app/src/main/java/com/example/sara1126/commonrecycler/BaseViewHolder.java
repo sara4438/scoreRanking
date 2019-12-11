@@ -19,7 +19,9 @@ public abstract class BaseViewHolder<T extends BaseModel> extends RecyclerView.V
             if(clickFuncBuilder != null)
                 this.clickFuncMap = clickFuncBuilder.getMap();
         }
-
+        public String getCatName(){
+            return null;
+        }
         @NonNull
         public abstract BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType);
     }

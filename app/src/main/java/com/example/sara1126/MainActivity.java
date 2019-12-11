@@ -2,141 +2,108 @@ package com.example.sara1126;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ClipData;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.sara1126.commonrecycler.BaseModel;
+import com.example.sara1126.commonrecycler.CommonAdapter;
+import com.example.sara1126.item.Category;
+import com.example.sara1126.item.CategoryViewHolder;
+import com.example.sara1126.item.Employee;
+import com.example.sara1126.item.EmployeeViewHolder;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList <Member> arrayList;
+    private ArrayList <BaseModel> arrayList;
+    private Button btnAdd;
+    private CommonAdapter commonAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         arrayList = new ArrayList<>();
-        arrayList.add(new Member("test1", "test1", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test2", "test2", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test3", "test3", "0912345678", "1990/07/28"));
-
-        arrayList.add(new Member("test4", "test1", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test5", "test2", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test6", "test3", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test7", "test1", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test8", "test2", "0912345678", "1990/07/28"));
-        arrayList.add(new Member("test9", "test3", "0912345678", "1990/07/28"));
+        arrayList.add(new Category("d1"));
+        arrayList.add(new Employee("d1", "n1", "t1"));
+        arrayList.add(new Employee("d1", "n2", "t2"));
+        arrayList.add(new Category("d2"));
+        arrayList.add(new Employee("d2", "n3", "t3"));
+        arrayList.add(new Category("d3"));
+        arrayList.add(new Employee("d3", "n4", "t4"));
+        arrayList.add(new Category("d4"));
+        arrayList.add(new Employee("d4", "n5", "t5"));
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(this);  //決定布局方向
-//        RecyclerView.LayoutManager layoutManager =
-//                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        RecyclerView.LayoutManager layoutManager =  //一行兩個
-//                new GridLayoutManager(this, 2);
 
-        RecyclerView recyclerView = findViewById(R.id.rv_test);
+
+        RecyclerView recyclerView = findViewById(R.id.rv_employee_info);
         recyclerView.setLayoutManager(layoutManager);
-        CustomAdpapter adapter = new CustomAdpapter(arrayList);
-        recyclerView.setAdapter(adapter);
 
-
+        commonAdapter = new CommonAdapter(
+                    Arrays.asList(
+                            new EmployeeViewHolder.Factory(null),
+                            new CategoryViewHolder.Factory(null)
+                )
+        );
+        commonAdapter.bindDataSource(arrayList);
+        recyclerView.setAdapter(commonAdapter);
+        init();
+        setBtnAdd();
+    }
+    public void init(){
+        btnAdd = findViewById(R.id.main_btn_add);
+    }
+    public void setBtnAdd(){
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                View view = inflater.inflate(R.layout.dialog_add, null); //不需要他的父元件
+                final Dialog addDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setView(view)
+                        .setCancelable(false)
+                        .show();
+                final EditText etCategory = view.findViewById(R.id.dialog_add_category);
+                final EditText etName = view.findViewById(R.id.dialog_add_name);
+                final EditText etTitle = view.findViewById(R.id.dialog_add_title);
+                final Button btnAdd = view.findViewById(R.id.dialog_add_btn_add);
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean match = false;
+                        for (int i = arrayList.size() - 1; i > 0; i--) {
+                            int insert = i+1;
+                            if (etCategory.getText().toString().equals(arrayList.get(i).getCatName())) {
+                                arrayList.add(insert, new Employee( etCategory.getText().toString(), etName.getText().toString()
+                                        , etTitle.getText().toString())) ;
+                                match = true;
+                                break;
+                            }
+                        }
+                        if(!match) {
+                            arrayList.add(new Category(etCategory.getText().toString()));
+                            arrayList.add(new Employee(etCategory.getText().toString(), etName.getText().toString()
+                                    ,etTitle.getText().toString()));
+                        }
+                        commonAdapter.notifyDataSetChanged();
+                        addDialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
-    public static class CustomAdpapter extends RecyclerView.Adapter <RecyclerView.ViewHolder>{
-        private ArrayList<Member> data;
-
-        public CustomAdpapter (ArrayList <Member> arrayList){ //如果是參考資料型態 =>會動到外面實體
-            data = new ArrayList<>(arrayList); //拷貝,進去 不會動到外面資料
-        }
-
-
-        private class ItemViewHolder extends RecyclerView.ViewHolder{
-             TextView tvAccount;
-             TextView tvName;
-             TextView tvPhoneNum;
-             TextView tvBirth;
-
-
-            public ItemViewHolder(@NonNull View itemView) { //決定每個view的呈現方式, 裡面包一個view
-                super(itemView);
-                tvAccount = itemView.findViewById(R.id.user_info_tv_account);
-                tvName = itemView.findViewById(R.id.user_info_tv_name);
-                tvPhoneNum = itemView.findViewById(R.id.user_info_tv_phone_num);
-                tvBirth = itemView.findViewById(R.id.user_info_tv_birth);
-
-//                        .setOnClickListener(new View.OnClickListener() { //只要是view就可以setOnClickListener
-//                    @Override
-//                    public void onClick(View v) {
-////                        tvTest.setText(getLayoutPosition()+"");  //點擊當下他在Layout的位置 回傳我點下是哪個位置
-//                    data.set(getLayoutPosition(), getLayoutPosition()+ ""); //一開始點沒反應, 滑一滑變數字
-////                    CustomAdpapter.this.notifyItemChanged(getLayoutPosition()); //淡出動畫
-//                      CustomAdpapter.this.notifyDataSetChanged(); //全部刷新, 耗效能, 沒動畫
-//                    }
-//                });
-            }
-        }
-        private class AddItemViewHolder extends RecyclerView.ViewHolder{
-            Button btnAdd;
-            public AddItemViewHolder(View itemView){
-                super(itemView);
-                btnAdd = itemView.findViewById(R.id.user_info_btn_add);
-            }
-        }
-
-
-
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            if(viewType ==1) {
-                View view = LayoutInflater.from(parent.getContext()) //用元件找context (activity)
-                        .inflate(R.layout.user_info_item_add, parent, false);//一定要是false
-                return new AddItemViewHolder(view); //將view包裝成view holder
-            }
-            View view = LayoutInflater.from(parent.getContext()) //用元件找context (activity)
-                    .inflate(R.layout.user_info_item_member, parent, false);
-            return new ItemViewHolder(view);
-        }
-
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {  //position:當前綁定的原件在整個列表(顯示的)是第幾個
-//            if(holder instanceof ItemViewHolder){ //較不推薦方法
-            int viewType= getItemViewType(position);
-            if(viewType==0 ){
-                ItemViewHolder ivh = (ItemViewHolder)holder; //降轉
-//                ivh.tvTest.setText(data.get(position));
-                Member member = data.get(position);
-                ivh.tvAccount.setText(member.getAccount());
-                ivh.tvName.setText(member.getName());
-                ivh.tvBirth.setText(member.getBirth());
-                ivh.tvPhoneNum.setText(member.getPhoneNum());
-                //可能需要把adapter改成全域變數
-            }else if (viewType ==1){
-
-            }
-//
-        }
-
-        public int getItemViewType(int position){ //依照position決定item樣式
-            //找到最後一個把它變add
-            if(position == data.size()){
-                return 1;
-            }
-            return 0;
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size() +1; //為了多顯示一個新增按鈕
-        }
-    }
 
 }
