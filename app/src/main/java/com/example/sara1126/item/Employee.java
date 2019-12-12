@@ -22,6 +22,11 @@ public class Employee implements BaseModel {
         return category;
     }
 
+    @Override
+    public int getSeat() {
+        return 0;
+    }
+
     public void setCategory(String category) {
         this.category = category;
     }

@@ -50,16 +50,16 @@ public class StudentViewHolder extends BaseViewHolder<Student> {
         super(itemView);
         tvMath = itemView.findViewById(R.id.item_student_math);
         tvEng = itemView.findViewById(R.id.item_student_eng);
-        tvName = itemView.findViewById(R.id.item_dpt_emploee_info_tv_name);
+        tvName = itemView.findViewById(R.id.item_student_name);
         tvSeat = itemView.findViewById(R.id.item_student_seat);
     }
         @Override
-        public void bind(Student baseModel) {
+        public void bind(Student student) {
 
-            tvMath.setText(baseModel.getMathScore());
-            tvEng.setText(baseModel.getEngScore());
-            tvSeat.setText(baseModel.getSeat());
-            tvName.setText(baseModel.getName());
+            tvMath.setText(student.getMathScore());
+            tvEng.setText(student.getEngScore());
+            tvSeat.setText(student.getSeat());
+            tvName.setText(student.getName());
         }
 
 }
