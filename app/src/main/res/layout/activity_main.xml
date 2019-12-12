@@ -17,16 +17,44 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/main_btn_add"
+            android:id="@+id/main_btn_add_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/item_dpt_employee_btn_add" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/main_btn_sort_by_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_dpt_employee_btn_sort_by_seat" />
+
+        <Button
+            android:id="@+id/main_btn_sort_by_math"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_dpt_employee_btn_sort_by_math" />
+
+        <Button
+            android:id="@+id/main_btn_sort_by_eng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_dpt_employee_btn_sort_by_eng" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_employee_info"
+        android:id="@+id/rv_students_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
-</LinearLayout>
+    </LinearLayout>

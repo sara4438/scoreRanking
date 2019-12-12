@@ -8,4 +8,8 @@
     <string name="dialog_add_title">職稱 : </string>
     <string name="dialog_add_btn_add">確定新增</string>
 
+    <string name="item_dpt_employee_btn_sort_by_seat">按座號排列</string>
+    <string name="item_dpt_employee_btn_sort_by_math">按數學成績排列</string>
+    <string name="item_dpt_employee_btn_sort_by_eng">按英文成績排列</string>
+
 </resources>
