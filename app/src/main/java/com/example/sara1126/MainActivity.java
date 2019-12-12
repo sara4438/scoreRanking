@@ -47,9 +47,8 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.rv_students_info);
         recyclerView.setLayoutManager(layoutManager);
 
-        commonAdapter = new CommonAdapter(new StudentViewHolder.Factory(null));
-                )
-        );
+        commonAdapter = new CommonAdapter(Arrays.asList(new StudentViewHolder.Factory(null)));
+
         commonAdapter.bindDataSource(students);
         recyclerView.setAdapter(commonAdapter);
         init();
@@ -60,45 +59,45 @@ public class MainActivity extends AppCompatActivity {
     public void init(){
         btnAdd = findViewById(R.id.main_btn_add_student);
     }
-    public void setBtnAdd(){
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-                View view = inflater.inflate(R.layout.dialog_add, null); //不需要他的父元件
-                final Dialog addDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setView(view)
-                        .setCancelable(false)
-                        .show();
-                final EditText etCategory = view.findViewById(R.id.dialog_add_category);
-                final EditText etName = view.findViewById(R.id.dialog_add_name);
-                final EditText etTitle = view.findViewById(R.id.dialog_add_title);
-                final Button btnAdd = view.findViewById(R.id.dialog_add_btn_add);
-                btnAdd.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean match = false;
-                        for (int i = students.size() - 1; i > 0; i--) {
-                            int insert = i+1;
-                            if (etCategory.getText().toString().equals(students.get(i).getCatName())) {
-                                students.add(insert, new Employee( etCategory.getText().toString(), etName.getText().toString()
-                                        , etTitle.getText().toString())) ;
-                                match = true;
-                                break;
-                            }
-                        }
-                        if(!match) {
-                            students.add(new Category(etCategory.getText().toString()));
-                            students.add(new Employee(etCategory.getText().toString(), etName.getText().toString()
-                                    ,etTitle.getText().toString()));
-                        }
-                        commonAdapter.notifyDataSetChanged();
-                        addDialog.dismiss();
-                    }
-                });
-            }
-        });
-    }
+//    public void setBtnAdd(){
+//        btnAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+//                View view = inflater.inflate(R.layout.dialog_add, null); //不需要他的父元件
+//                final Dialog addDialog = new AlertDialog.Builder(MainActivity.this)
+//                        .setView(view)
+//                        .setCancelable(false)
+//                        .show();
+//                final EditText etCategory = view.findViewById(R.id.dialog_add_category);
+//                final EditText etName = view.findViewById(R.id.dialog_add_name);
+//                final EditText etTitle = view.findViewById(R.id.dialog_add_title);
+//                final Button btnAdd = view.findViewById(R.id.dialog_add_btn_add);
+//                btnAdd.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        boolean match = false;
+//                        for (int i = students.size() - 1; i > 0; i--) {
+//                            int insert = i+1;
+//                            if (etCategory.getText().toString().equals(students.get(i).getCatName())) {
+//                                students.add(insert, new Employee( etCategory.getText().toString(), etName.getText().toString()
+//                                        , etTitle.getText().toString())) ;
+//                                match = true;
+//                                break;
+//                            }
+//                        }
+//                        if(!match) {
+//                            students.add(new Category(etCategory.getText().toString()));
+//                            students.add(new Employee(etCategory.getText().toString(), etName.getText().toString()
+//                                    ,etTitle.getText().toString()));
+//                        }
+//                        commonAdapter.notifyDataSetChanged();
+//                        addDialog.dismiss();
+//                    }
+//                });
+//            }
+//        });
+//    }
     public void setBtnSortBySeat(){
         btnSortBySeat.setOnClickListener(new View.OnClickListener() {
             @Override

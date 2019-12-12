@@ -31,7 +31,7 @@ public class StudentViewHolder extends BaseViewHolder<Student> {
 
         @Override
         public String getType() {
-            return Employee.TYPE;
+            return Student.TYPE;
         }
 
         @Override
@@ -55,6 +55,7 @@ public class StudentViewHolder extends BaseViewHolder<Student> {
     }
         @Override
         public void bind(Student baseModel) {
+
             tvMath.setText(baseModel.getMathScore());
             tvEng.setText(baseModel.getEngScore());
             tvSeat.setText(baseModel.getSeat());

@@ -32,6 +32,11 @@ public class EmployeeViewHolder extends BaseViewHolder<Employee> {
         public String getType() {
             return Employee.TYPE;
         }
+
+        @Override
+        public int getSeat() {
+            return 0;
+        }
     }
 
     private TextView tvName;
