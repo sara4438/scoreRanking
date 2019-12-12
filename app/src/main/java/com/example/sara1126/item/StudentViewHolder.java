@@ -26,7 +26,7 @@ public class StudentViewHolder extends BaseViewHolder<Student> {
         public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_student, parent, false);
-            return new EmployeeViewHolder(view);
+            return new StudentViewHolder(view);
         }
 
         @Override
@@ -36,6 +36,11 @@ public class StudentViewHolder extends BaseViewHolder<Student> {
 
         @Override
         public int getSeat() {
+            return 0;
+        }
+
+        @Override
+        public int getEngScore() {
             return 0;
         }
     }
@@ -55,11 +60,12 @@ public class StudentViewHolder extends BaseViewHolder<Student> {
     }
         @Override
         public void bind(Student student) {
-
-            tvMath.setText(student.getMathScore());
-            tvEng.setText(student.getEngScore());
-            tvSeat.setText(student.getSeat());
+            String strMath = Integer.toString(student.getMathScore());
+            String strEng = Integer.toString(student.getEngScore());
+            String strSeat=Integer.toString(student.getSeat());
+            tvMath.setText(strMath);
+            tvEng.setText(strEng);
+            tvSeat.setText(strSeat);
             tvName.setText(student.getName());
         }
-
 }

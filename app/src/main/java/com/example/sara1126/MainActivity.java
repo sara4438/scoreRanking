@@ -14,8 +14,9 @@ import android.widget.EditText;
 
 import com.example.sara1126.commonrecycler.BaseModel;
 import com.example.sara1126.commonrecycler.CommonAdapter;
-import com.example.sara1126.item.Employee;
-import com.example.sara1126.item.EmployeeViewHolder;
+import com.example.sara1126.commonrecycler.ComparaByEngScore;
+import com.example.sara1126.commonrecycler.Comparator;
+import com.example.sara1126.commonrecycler.CompareBySeat;
 import com.example.sara1126.item.Student;
 import com.example.sara1126.item.StudentViewHolder;
 
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList <BaseModel> students;
     private Button btnAdd;
     private Button btnSortBySeat;
-    private CommonAdapter commonAdapter;
+    private Button btnSortByEngScore;
+    static private CommonAdapter commonAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +36,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnAdd = findViewById(R.id.main_btn_add_student);
         btnSortBySeat = findViewById(R.id.main_btn_sort_by_seat);
+        btnSortByEngScore = findViewById(R.id.main_btn_sort_by_eng);
         students = new ArrayList<>();
-        students.add(new Student("student1",1, 80, 90));
-        students.add(new Student("student2",2, 70, 95));
-        students.add(new Student("student3",3, 100, 60));
-        students.add(new Student("student4",4, 60, 55));
-        students.add(new Student("student5",5, 85, 75));
+
+        students.add(new Student("student2",2, 70 ));
+        students.add(new Student("student4",4, 60));
+        students.add(new Student("student1",1, 80));
+        students.add(new Student("student3",3, 100));
+        students.add(new Student("student5",5, 85));
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(this);  //決定布局方向
 
@@ -48,89 +52,63 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         commonAdapter = new CommonAdapter(Arrays.asList(new StudentViewHolder.Factory(null)));
-
         commonAdapter.bindDataSource(students);
         recyclerView.setAdapter(commonAdapter);
         init();
 //        setBtnAdd();
         setBtnSortBySeat();
-
+        setBtnSortByEngScore();
+        setBtnAdd();
     }
     public void init(){
         btnAdd = findViewById(R.id.main_btn_add_student);
     }
-//    public void setBtnAdd(){
-//        btnAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-//                View view = inflater.inflate(R.layout.dialog_add, null); //不需要他的父元件
-//                final Dialog addDialog = new AlertDialog.Builder(MainActivity.this)
-//                        .setView(view)
-//                        .setCancelable(false)
-//                        .show();
-//                final EditText etCategory = view.findViewById(R.id.dialog_add_category);
-//                final EditText etName = view.findViewById(R.id.dialog_add_name);
-//                final EditText etTitle = view.findViewById(R.id.dialog_add_title);
-//                final Button btnAdd = view.findViewById(R.id.dialog_add_btn_add);
-//                btnAdd.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        boolean match = false;
-//                        for (int i = students.size() - 1; i > 0; i--) {
-//                            int insert = i+1;
-//                            if (etCategory.getText().toString().equals(students.get(i).getCatName())) {
-//                                students.add(insert, new Employee( etCategory.getText().toString(), etName.getText().toString()
-//                                        , etTitle.getText().toString())) ;
-//                                match = true;
-//                                break;
-//                            }
-//                        }
-//                        if(!match) {
-//                            students.add(new Category(etCategory.getText().toString()));
-//                            students.add(new Employee(etCategory.getText().toString(), etName.getText().toString()
-//                                    ,etTitle.getText().toString()));
-//                        }
-//                        commonAdapter.notifyDataSetChanged();
-//                        addDialog.dismiss();
-//                    }
-//                });
-//            }
-//        });
-//    }
+    public void setBtnAdd(){
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                View view = inflater.inflate(R.layout.dialog_add, null); //不需要他的父元件
+                final Dialog addDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setView(view)
+                        .setCancelable(false)
+                        .show();
+                final EditText etName = view.findViewById(R.id.dialog_add_name);
+                final EditText etSeat = view.findViewById(R.id.dialog_add_seat);
+                final EditText etEngScore = view.findViewById(R.id.dialog_add_engScore);
+                final Button btnAdd = view.findViewById(R.id.dialog_add_btn_add);
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        students.add(new Student(etName.getText().toString(), Integer.parseInt(etSeat.getText().toString()),
+                                Integer.parseInt(etEngScore.getText().toString())));
+                        commonAdapter.notifyDataSetChanged();
+                        addDialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
+    public void setBtnSortByEngScore(){
+        btnSortByEngScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sort(students,new ComparaByEngScore(students));
+                commonAdapter.notifyDataSetChanged();
+            }
+        });
+    }
     public void setBtnSortBySeat(){
         btnSortBySeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortBySeat(students);
+                sort(students,new CompareBySeat(students));
+                commonAdapter.notifyDataSetChanged();
             }
         });
     }
-    public void sortBySeat(ArrayList<BaseModel> arr){
-        sortBySeat(arr, 0, arr.size()-1);
-    }
-    public static void sortBySeat(ArrayList<BaseModel> a, int left, int right){
-        if(left >= right)
-            return;
-        int i = left + 1;
-        int j = right;
-        BaseModel pivot = a.get(left);
-        do{
-            while(i <= right && a.get(i).getSeat() < pivot.getSeat()) i++;
-            while(a.get(j).getSeat() > pivot.getSeat()) j--;
-            if(i >= j){
-                break;
-            }
-            swap(a, i, j);
-        }while(true);
-        swap(a, left, j);
-        sortBySeat(a, left, j-1);
-        sortBySeat(a, j+1, right);
-    }
-    public static void swap(ArrayList<BaseModel> arr, int i, int j){
-        BaseModel tmp = arr.get(i);
-        arr.set(i,arr.get(j));
-        arr.set(j, tmp);
+    public void sort(ArrayList<BaseModel> arr , Comparator comparator){
+        comparator.sort(arr, 0, arr.size()-1);
     }
 
 }

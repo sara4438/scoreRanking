@@ -4,4 +4,5 @@ public interface BaseModel {
     String getType();
     String getCatName();
     public int getSeat();
+    public int getEngScore();
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -15,10 +16,11 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_add_category" />
+            android:text="@string/dialog_add_name"
+            tools:text="@string/dialog_add_name" />
 
         <EditText
-            android:id="@+id/dialog_add_category"
+            android:id="@+id/dialog_add_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -35,10 +37,11 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_add_name" />
+            android:text="@string/dialog_add_seat"
+            tools:text="@string/dialog_add_seat" />
 
         <EditText
-            android:id="@+id/dialog_add_name"
+            android:id="@+id/dialog_add_seat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -55,10 +58,10 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_add_title" />
+            android:text="@string/dialog_add_engScore" />
 
         <EditText
-            android:id="@+id/dialog_add_title"
+            android:id="@+id/dialog_add_engScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
