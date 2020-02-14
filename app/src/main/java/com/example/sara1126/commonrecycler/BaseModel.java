@@ -5,4 +5,5 @@ public interface BaseModel {
     String getCatName();
     public int getSeat();
     public int getEngScore();
+    public int getMathScore();
 }

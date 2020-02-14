@@ -2,10 +2,10 @@ package com.example.sara1126.commonrecycler;
 
 import java.util.ArrayList;
 
-public class ComparaByEngScore implements Comparator {
+public class CompareByEng implements Comparator {
 
     public ArrayList <BaseModel>arr;
-    public ComparaByEngScore(ArrayList<BaseModel> arr){
+    public CompareByEng(ArrayList<BaseModel> arr){
         this.arr = arr;
     }
     public void sort(ArrayList<BaseModel> arr){

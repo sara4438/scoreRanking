@@ -10,7 +10,7 @@ public class Student implements BaseModel {
     private int seat;
     public static String TYPE = "STUDENT";
 
-    public Student (String name, int seat, int engScore){
+    public Student (String name, int seat, int engScore, int mathScore){
         this.name = name;
         this.seat= seat;
         this.mathScore = mathScore;
@@ -44,8 +44,8 @@ public class Student implements BaseModel {
         this.name = name;
     }
 
-    public int getMathScore() {
-        return mathScore;
+     public int getMathScore(){
+        return this.mathScore;
     }
 
     public void setMathScore(int mathScore) {

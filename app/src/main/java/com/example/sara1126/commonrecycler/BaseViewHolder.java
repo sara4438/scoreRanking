@@ -22,6 +22,12 @@ public abstract class BaseViewHolder<T extends BaseModel> extends RecyclerView.V
         public String getCatName(){
             return null;
         }
+
+        @Override
+        public int getMathScore() {
+            return 0;
+        }
+
         @NonNull
         public abstract BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType);
     }
